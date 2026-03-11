@@ -27,6 +27,10 @@ jobs:
       - name: Run a one-line script
         run: echo Hello, world! 
         
+      - name: Setup .NET 6
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '6.0.x'
 
       - name: List all files and folders in $GITHUB_WORKSPACE
         shell: pwsh
