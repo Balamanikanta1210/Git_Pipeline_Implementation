@@ -1,0 +1,9 @@
+{
+  "issueKeyTestcaseValues": {},
+  "testManagerBasePath": "https://cloud.uipath.com/wistron/corp_qas/testmanager_",
+  "defaultProject": {
+    "id": "cb54ea5e-8409-0000-e7a0-0b47a516bfaf",
+    "name": "Apollo_Dashboard_Yield_Rate_WIH",
+    "key": "RO2024072600001"
+  }
+}

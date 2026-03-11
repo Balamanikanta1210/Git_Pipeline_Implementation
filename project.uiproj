@@ -1,0 +1,6 @@
+{
+  "Name": "Apollo Dashboard__yield rate",
+  "ProjectType": "Process",
+  "Description": "空白流程",
+  "MainFile": "Main.xaml"
+}
