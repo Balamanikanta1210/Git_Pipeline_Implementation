@@ -1,0 +1,66 @@
+# This is a basic workflow to help you get started with Actions
+
+name: CI
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the "main" branch
+  push:
+    branches: [ "main" ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: windows-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v4
+
+      # Runs a single command using the runners shell
+      - name: Run a one-line script
+        run: echo Hello, world! 
+        
+
+      - name: List all files and folders in $GITHUB_WORKSPACE
+        shell: pwsh
+        run: |
+            $projectPath = Join-Path $env:GITHUB_WORKSPACE "project.json"
+            Write-Host "Project path: $projectPath"
+            
+      - name: Download UiPath CLI (specific version from Azure DevOps)
+        run: |
+          Invoke-WebRequest "https://uipath.pkgs.visualstudio.com/Public.Feeds/_apis/packaging/feeds/1c781268-d43d-45ab-9dfc-0151a1c740b7/nuget/packages/UiPath.CLI.Windows/versions/23.6.8581.19168/content" -OutFile "uipcli.zip"
+          Expand-Archive -Path "uipcli.zip" -DestinationPath "uipcli"
+          
+      - name: Verify uipcli.exe exists
+        run: |
+          if (Test-Path ".\uipcli\tools\uipcli.exe") {
+            Write-Host "uipcli.exe found at .\uipcli\tools\uipcli.exe"
+          } else {
+            Write-Host "❌ uipcli.exe not found at .\uipcli\tools\uipcli.exe"
+          }
+      - name: Run uipcli pack
+        shell: pwsh
+        run: |
+          $projectPath = Join-Path $env:GITHUB_WORKSPACE "project.json"
+          $outputPath = Join-Path $env:GITHUB_WORKSPACE "Output"
+
+          Write-Host "Project path: $projectPath"
+          Write-Host "Output path: $outputPath"
+          $applicationId = "${{ secrets.UIPATH_APPLICATION_ID }}"
+          $applicationSecret = "${{ secrets.UIPATH_APPLICATION_SECRET }}"
+          .\uipcli\tools\uipcli.exe package pack $projectPath `
+            -o $outputPath `
+            --libraryOrchestratorUrl "https://cloud.uipath.com/" `
+            --libraryOrchestratorTenant "DefaultTenant" `
+            --libraryOrchestratorApplicationId $applicationId `
+            --libraryOrchestratorApplicationSecret $applicationSecret `
+            --libraryOrchestratorApplicationScope "OR.Assets OR.BackgroundTasks OR.Execution OR.Folders OR.Jobs OR.Machines.Read OR.Monitoring OR.Robots.Read OR.Settings.Read OR.TestSetExecutions OR.TestSets OR.TestSetSchedules OR.Users.Read" `
+            --libraryOrchestratorAccountForApp "walmazwnmqbk"
