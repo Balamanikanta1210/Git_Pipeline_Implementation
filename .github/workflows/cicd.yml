@@ -60,6 +60,7 @@ jobs:
           Write-Host "Output path: $outputPath"
           $applicationId = "${{ secrets.UIPATH_APPLICATION_ID }}"
           $applicationSecret = "${{ secrets.UIPATH_APPLICATION_SECRET }}"
+          .\uipcli\tools\uipcli.exe\uipcli --version
           .\uipcli\tools\uipcli.exe package pack $projectPath `
             -o $outputPath `
             --libraryOrchestratorUrl "https://cloud.uipath.com/" `
