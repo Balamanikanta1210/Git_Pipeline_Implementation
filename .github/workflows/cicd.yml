@@ -67,4 +67,5 @@ jobs:
             --libraryOrchestratorApplicationId $applicationId `
             --libraryOrchestratorApplicationSecret $applicationSecret `
             --libraryOrchestratorApplicationScope "OR.Assets OR.BackgroundTasks OR.Execution OR.Folders OR.Jobs OR.Machines.Read OR.Monitoring OR.Robots.Read OR.Settings.Read OR.TestSetExecutions OR.TestSets OR.TestSetSchedules OR.Users.Read" `
-            --libraryOrchestratorAccountForApp "walmazwnmqbk"
+            --libraryOrchestratorAccountForApp "walmazwnmqbk" `
+            --traceLevel "Verbose"
